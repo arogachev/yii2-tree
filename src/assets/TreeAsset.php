@@ -30,6 +30,6 @@ class TreeAsset extends AssetBundle
      */
     public $depends = [
         'yii\web\YiiAsset',
-        'arogachev\assets\JsTreeAsset',
+        'arogachev\tree\assets\JsTreeAsset',
     ];
 }

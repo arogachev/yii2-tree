@@ -1,0 +1,30 @@
+{
+    "name": "arogachev/yii2-tree",
+    "description": "Database tree structures management for Yii 2 framework",
+    "keywords": [
+        "yii2",
+        "tree",
+        "nested set",
+        "nested sets",
+        "widget",
+        "active record"
+    ],
+    "homepage": "https://github.com/arogachev/yii2-tree",
+    "type": "yii2-extension",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Alexey Rogachev",
+            "email": "arogachev90@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "bower-asset/jstree": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "arogachev\\tree\\": "src"
+        }
+    }
+}

@@ -38,7 +38,7 @@ class NestedSetsHelper
             $path[$depthValue] = $c;
 
             $value = [
-                'id' => $model->primaryKey()[0],
+                'id' => $model->primaryKey,
                 'text' => $model->name,
             ];
 

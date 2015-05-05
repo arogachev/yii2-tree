@@ -129,13 +129,13 @@ class TreeController extends Controller
             throw new BadRequestHttpException('Model primary key must be specified in order to find model.');
         }
 
-        if (!$createIfNotFound) {
-            $model = $modelClass::findOne($pk);
-            if (!$model) {
+        $model = $modelClass::findOne($pk);
+        if (!$model) {
+            if (!$createIfNotFound) {
                 throw new NotFoundHttpException('Model not found.');
+            } else {
+                $model = new $modelClass;
             }
-        } else {
-            $model = new $modelClass;
         }
 
         if (!($model instanceof ActiveRecord)) {

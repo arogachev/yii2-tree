@@ -40,6 +40,9 @@ class NestedSetsHelper
             $value = [
                 'id' => $model->primaryKey,
                 'text' => $model->name,
+                'state' => [
+                    'opened' => $model->{$model->isOpenedAttribute},
+                ],
             ];
 
             ArrayHelper::saveByPath($result, $path, $value);

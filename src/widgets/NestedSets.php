@@ -47,6 +47,8 @@ class NestedSets extends BaseWidget
                 'plugins' => ['contextmenu', 'dnd'],
             ],
             'clientEvents' => [
+                'open_node' => 'yii.tree.openNode',
+                'close_node' => 'yii.tree.closeNode',
                 'create_node' => 'yii.tree.createNode',
                 'move_node' => 'yii.tree.moveNode',
                 'rename_node' => 'yii.tree.renameNode',

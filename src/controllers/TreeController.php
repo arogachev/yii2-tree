@@ -54,6 +54,28 @@ class TreeController extends Controller
     }
 
     /**
+     * @throws BadRequestHttpException
+     * @throws NotFoundHttpException
+     */
+    public function actionOpen()
+    {
+        $model = $this->getModel();
+        $model->{$model->isOpenedAttribute} = true;
+        $model->save(false);
+    }
+
+    /**
+     * @throws BadRequestHttpException
+     * @throws NotFoundHttpException
+     */
+    public function actionClose()
+    {
+        $model = $this->getModel();
+        $model->{$model->isOpenedAttribute} = false;
+        $model->save(false);
+    }
+
+    /**
      * @return array
      * @throws BadRequestHttpException
      * @throws NotFoundHttpException

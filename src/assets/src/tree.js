@@ -2,6 +2,26 @@ yii.tree = (function($) {
     var pub = {
         modelClass: undefined,
 
+        openNode: function(event, target) {
+            $.post(
+                '/tree/open',
+                {
+                    modelClass: pub.modelClass,
+                    modelPk: target.node.id
+                }
+            );
+        },
+
+        closeNode: function(event, target) {
+            $.post(
+                '/tree/close',
+                {
+                    modelClass: pub.modelClass,
+                    modelPk: target.node.id
+                }
+            );
+        },
+
         createNode: function(event, target) {
             $.post(
                 '/tree/append-to',
@@ -29,41 +49,42 @@ yii.tree = (function($) {
         },
 
         moveNode: function(event, target) {
-            var tree = $(event.target);
-            var prevPk = tree.jstree('get_prev_dom', target.node).attr('id');
-            var nextPk = tree.jstree('get_next_dom', target.node).attr('id');
+            var $tree = $(event.target);
+            var $prevNode = $tree.jstree('get_prev_dom', target.node, true);
+            var $nextNode = $tree.jstree('get_next_dom', target.node, true);
 
-            if (target.old_parent != target.parent) {
-                $.post(
-                    '/tree/append-to',
-                    {
-                        modelClass: pub.modelClass,
-                        parentPk: target.parent,
-                        modelPk: target.node.id
-                    }
-                );
-
-                return;
-            }
-
-            if (prevPk) {
+            if ($prevNode) {
                 $.post(
                     '/tree/insert-after',
                     {
                         modelClass: pub.modelClass,
                         modelPk: target.node.id,
-                        prevModelPk: prevPk
+                        prevModelPk: $prevNode.attr('id')
                     }
                 );
-            } else if (nextPk) {
+            } else if ($nextNode) {
                 $.post(
                     '/tree/insert-before',
                     {
                         modelClass: pub.modelClass,
                         modelPk: target.node.id,
-                        nextModelPk: nextPk
+                        nextModelPk: $nextNode.attr('id')
                     }
                 );
+            }
+
+            if (target.old_parent != target.parent) {
+                var $newParent = $tree.jstree('get_node', target.parent);
+                if (!$newParent.state.opened) {
+                    $.post(
+                        '/tree/append-to',
+                        {
+                            modelClass: pub.modelClass,
+                            parentPk: target.parent,
+                            modelPk: target.node.id
+                        }
+                    );
+                }
             }
         },
 

@@ -90,6 +90,20 @@ class TreeController extends Controller
     }
 
     /**
+     * @return array
+     * @throws BadRequestHttpException
+     * @throws NotFoundHttpException
+     */
+    public function actionPrependTo()
+    {
+        $parent = $this->getModel('parentPk');
+        $model = $this->getModel(null, true);
+        $model->prependTo($parent);
+
+        return ['pk' => $model->primaryKey];
+    }
+
+    /**
      * @throws BadRequestHttpException
      * @throws NotFoundHttpException
      */

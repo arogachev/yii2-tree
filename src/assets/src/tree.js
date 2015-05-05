@@ -77,7 +77,7 @@ yii.tree = (function($) {
                 var $newParent = $tree.jstree('get_node', target.parent);
                 if (!$newParent.state.opened) {
                     $.post(
-                        '/tree/append-to',
+                        '/tree/prepend-to',
                         {
                             modelClass: pub.modelClass,
                             parentPk: target.parent,

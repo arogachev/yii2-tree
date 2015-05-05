@@ -20,6 +20,7 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
+        "creocoder/yii2-nested-sets": "0.9.*",
         "bower-asset/jstree": "*"
     },
     "autoload": {

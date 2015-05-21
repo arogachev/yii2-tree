@@ -2,7 +2,8 @@
 
 namespace arogachev\tree\controllers;
 
-use arogachev\tree\helpers\NestedSetsHelper;
+use arogachev\tree\behaviors\NestedSetsManagementBehavior;
+use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\filters\ContentNegotiator;
@@ -50,7 +51,7 @@ class TreeController extends Controller
      */
     public function actionGetTree()
     {
-        return NestedSetsHelper::getHierarchicalArray(Yii::$app->request->get('modelClass'));
+        return $this->getModel(null, true)->getHierarchicalArray();
     }
 
     /**
@@ -149,7 +150,7 @@ class TreeController extends Controller
     /**
      * @param null|string $paramName
      * @param boolean $createIfNotFound
-     * @return \yii\db\ActiveRecord|\creocoder\nestedsets\NestedSetsBehavior
+     * @return \yii\db\ActiveRecord|NestedSetsBehavior|NestedSetsManagementBehavior
      * @throws BadRequestHttpException
      * @throws NotFoundHttpException
      */

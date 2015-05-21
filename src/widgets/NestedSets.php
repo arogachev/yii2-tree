@@ -45,6 +45,21 @@ class NestedSets extends BaseWidget
             $this->options['id'] = $this->getId();
         }
 
+        $clientEvents = [
+            'create_node' => 'yii.tree.createNode',
+            'move_node' => 'yii.tree.moveNode',
+            'rename_node' => 'yii.tree.renameNode',
+            'delete_node' => 'yii.tree.deleteNode',
+        ];
+
+        $model = new $this->modelClass;
+        if ($model->saveState) {
+            $clientEvents = array_merge($clientEvents, [
+                'open_node' => 'yii.tree.openNode',
+                'close_node' => 'yii.tree.closeNode',
+            ]);
+        }
+
         $this->jsTreeOptions = ArrayHelper::merge([
             'clientOptions' => [
                 'core' => [
@@ -65,14 +80,7 @@ class NestedSets extends BaseWidget
                     ],
                 ],
             ],
-            'clientEvents' => [
-                'open_node' => 'yii.tree.openNode',
-                'close_node' => 'yii.tree.closeNode',
-                'create_node' => 'yii.tree.createNode',
-                'move_node' => 'yii.tree.moveNode',
-                'rename_node' => 'yii.tree.renameNode',
-                'delete_node' => 'yii.tree.deleteNode',
-            ],
+            'clientEvents' => $clientEvents,
         ], $this->jsTreeOptions);
     }
 

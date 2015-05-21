@@ -7,6 +7,7 @@ use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\filters\ContentNegotiator;
+use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
@@ -51,7 +52,7 @@ class TreeController extends Controller
      */
     public function actionGetTree()
     {
-        return $this->getModel(null, true)->getHierarchicalArray();
+        return $this->createModel(Yii::$app->request->get())->getHierarchicalArray();
     }
 
     /**
@@ -148,6 +149,26 @@ class TreeController extends Controller
     }
 
     /**
+     * @param array $data
+     * @return \yii\db\ActiveRecord|NestedSetsBehavior|NestedSetsManagementBehavior
+     * @throws BadRequestHttpException
+     */
+    protected function createModel($data)
+    {
+        $modelClass = ArrayHelper::getValue($data, 'modelClass');
+        if (!$modelClass) {
+            throw new BadRequestHttpException('Model class must be specified in order to find model.');
+        }
+
+        $model = new $modelClass;
+        if (!($model instanceof ActiveRecord)) {
+            throw new BadRequestHttpException('Valid ActiveRecord model class must be specified.');
+        }
+
+        return $model;
+    }
+
+    /**
      * @param null|string $paramName
      * @param boolean $createIfNotFound
      * @return \yii\db\ActiveRecord|NestedSetsBehavior|NestedSetsManagementBehavior
@@ -156,10 +177,9 @@ class TreeController extends Controller
      */
     protected function getModel($paramName = null, $createIfNotFound = false)
     {
-        $modelClass = Yii::$app->request->post('modelClass');
-        if (!$modelClass) {
-            throw new BadRequestHttpException('Model class must be specified in order to find model.');
-        }
+        $baseModel = $this->createModel(Yii::$app->request->post());
+        /* @var $modelClass \yii\db\ActiveRecord */
+        $modelClass = $baseModel->className();
 
         $pk = Yii::$app->request->post($paramName ?: 'modelPk');
         if (!$pk && !$createIfNotFound) {
@@ -171,12 +191,8 @@ class TreeController extends Controller
             if (!$createIfNotFound) {
                 throw new NotFoundHttpException('Model not found.');
             } else {
-                $model = new $modelClass;
+                $model = $baseModel;
             }
-        }
-
-        if (!($model instanceof ActiveRecord)) {
-            throw new BadRequestHttpException('Valid ActiveRecord model class must be specified.');
         }
 
         return $model;

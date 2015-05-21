@@ -2,6 +2,13 @@ yii.tree = (function($) {
     var pub = {
         modelClass: undefined,
 
+        overrideDefaults: function(userOptions) {
+            var items = $.jstree.defaults.contextmenu.items();
+            $.extend(true, items, userOptions);
+            delete items.ccp;
+            $.jstree.defaults.contextmenu.items = items;
+        },
+
         openNode: function(event, target) {
             $.post(
                 '/tree/open',

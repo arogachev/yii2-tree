@@ -36,6 +36,17 @@ class JsTree extends BaseWidget
         }
     }
 
+    protected function overrideDefaults()
+    {
+        if (!isset($this->clientOptions['contextmenu']['items'])) {
+            return;
+        }
+
+        $userOptions = Json::encode($this->clientOptions['contextmenu']['items']);
+        $js = "yii.tree.overrideDefaults($userOptions);";
+        $this->getView()->registerJs($js);
+    }
+
     /**
      * @param string $id
      */
@@ -72,6 +83,7 @@ class JsTree extends BaseWidget
             $id = $this->options['id'];
         }
         JsTreeAsset::register($this->getView());
+        $this->overrideDefaults();
         $this->registerClientOptions($id);
         $this->registerClientEvents($id);
     }

@@ -10,6 +10,11 @@ class NestedSetsManagementBehavior extends Behavior
     /**
      * @var string
      */
+    public $nameAttribute = 'name';
+
+    /**
+     * @var string
+     */
     public $isOpenedAttribute = 'is_opened';
 
     /**
@@ -53,7 +58,7 @@ class NestedSetsManagementBehavior extends Behavior
 
             $value = [
                 'id' => $model->primaryKey,
-                'text' => $model->name,
+                'text' => $model->{$model->nameAttribute},
             ];
 
             if ($this->saveState) {

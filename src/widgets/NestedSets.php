@@ -106,7 +106,7 @@ class NestedSets extends BaseWidget
         /* @var $model \yii\db\ActiveRecord */
         $model = new $this->modelClass;
         $properties = Json::encode([
-            'modelClass' => addslashes($this->modelClass),
+            'modelClass' => $this->modelClass,
             'modelPk' => $model->primaryKey()[0],
             'updateUrl' => Url::to($this->updateUrl),
         ]);

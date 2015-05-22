@@ -7,20 +7,26 @@ use Yii;
 use yii\base\Widget as BaseWidget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\i18n\PhpMessageSource;
 
 class NestedSets extends BaseWidget
 {
     /**
-     * @var array
+     * @var string
      */
-    public $options = [];
+    public $modelClass;
 
     /**
      * @var string
      */
-    public $modelClass;
+    public $updateUrl;
+
+    /**
+     * @var array
+     */
+    public $options = [];
 
     /**
      * @var array
@@ -60,6 +66,15 @@ class NestedSets extends BaseWidget
             ]);
         }
 
+        $items = [
+            'create' => ['label' => Yii::t('tree', 'Create')],
+            'rename' => ['label' => Yii::t('tree', 'Rename')],
+            'remove' => ['label' => Yii::t('tree', 'Remove')],
+        ];
+        if ($this->updateUrl) {
+            $items['update'] = ['label' => Yii::t('tree', 'Update')];
+        }
+
         $this->jsTreeOptions = ArrayHelper::merge([
             'clientOptions' => [
                 'core' => [
@@ -73,11 +88,7 @@ class NestedSets extends BaseWidget
                 ],
                 'plugins' => ['contextmenu', 'dnd'],
                 'contextmenu' => [
-                    'items' => [
-                        'create' => ['label' => Yii::t('tree', 'Create')],
-                        'rename' => ['label' => Yii::t('tree', 'Rename')],
-                        'remove' => ['label' => Yii::t('tree', 'Remove')],
-                    ],
+                    'items' => $items,
                 ],
             ],
             'clientEvents' => $clientEvents,
@@ -91,8 +102,16 @@ class NestedSets extends BaseWidget
     public function run()
     {
         TreeAsset::register($this->view);
-        $modelClass = addslashes($this->modelClass);
-        $this->getView()->registerJs("yii.tree.modelClass = '$modelClass';");
+
+        /* @var $model \yii\db\ActiveRecord */
+        $model = new $this->modelClass;
+        $properties = Json::encode([
+            'modelClass' => addslashes($this->modelClass),
+            'modelPk' => $model->primaryKey()[0],
+            'updateUrl' => Url::to($this->updateUrl),
+        ]);
+        $this->getView()->registerJs("yii.tree.initProperties($properties);");
+
         echo Html::tag('div', JsTree::widget($this->jsTreeOptions), $this->options);
     }
 }

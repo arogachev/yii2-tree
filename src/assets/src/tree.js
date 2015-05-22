@@ -2,10 +2,35 @@ yii.tree = (function($) {
     var pub = {
         modelClass: undefined,
 
+        modelPk: undefined,
+
+        updateUrl: undefined,
+
+        initProperties: function(properties) {
+            $.each(properties, function (name, value) {
+                pub[name] = value;
+            });
+        },
+
         overrideDefaults: function(userOptions) {
             var items = $.jstree.defaults.contextmenu.items();
             $.extend(true, items, userOptions);
             delete items.ccp;
+            if (pub.updateUrl && items.update) {
+                var label = items.update.label;
+                items.update = {
+                    separator_before: false,
+                    separator_after: true,
+                    _disabled: false,
+                    label: label,
+                    action: function(data) {
+                        var inst = $.jstree.reference(data.reference);
+                        var obj = inst.get_node(data.reference);
+
+                        window.location.href = pub.updateUrl + '?' + pub.modelPk + '=' + obj.id;
+                    }
+                };
+            }
             $.jstree.defaults.contextmenu.items = items;
         },
 

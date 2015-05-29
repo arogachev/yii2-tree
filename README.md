@@ -12,6 +12,8 @@ Currently it's Nested Sets management extension based on:
 - [Yii2 Nested Sets](https://github.com/creocoder/yii2-nested-sets)
 - [jsTree](https://github.com/vakata/jstree)
 
+Contents:
+
 - [Installation](#installation)
 - [Features](#features)
 - [Usage](#usage)

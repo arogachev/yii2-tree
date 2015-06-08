@@ -64,6 +64,7 @@ class NestedSetsManagementBehavior extends Behavior
             if ($this->saveState) {
                 $value['state'] = [
                     'opened' => $model->{$model->isOpenedAttribute},
+                    'disabled' => $model->isRoot(),
                 ];
             }
 

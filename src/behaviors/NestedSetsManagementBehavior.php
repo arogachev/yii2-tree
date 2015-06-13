@@ -77,4 +77,36 @@ class NestedSetsManagementBehavior extends Behavior
 
         return $result;
     }
+
+    /**
+     * @return array
+     */
+    public function getFullPathsList()
+    {
+        return $this->fillPath($this->getHierarchicalArray());
+    }
+
+    /**
+     * @param array $items
+     * @param array $path
+     * @param array $result
+     * @return array
+     */
+    protected function fillPath($items, &$path = [], &$result = [])
+    {
+        foreach ($items as $item) {
+            $result[$item['id']] = implode(' / ', array_merge($path, [$item['text']]));
+
+            if (isset($item['children'])) {
+                $path[] = $item['text'];
+                $this->fillPath($item['children'], $path, $result);
+            }
+
+            if ($item === end($items)) {
+                array_pop($path);
+            }
+        }
+
+        return $result;
+    }
 }

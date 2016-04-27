@@ -16,6 +16,7 @@ use yii\web\Response;
 
 class TreeController extends Controller
 {
+
     /**
      * @inheritdoc
      */
@@ -112,7 +113,7 @@ class TreeController extends Controller
     public function actionRename()
     {
         $model = $this->getModel();
-        $model->name = Yii::$app->request->post('name');
+        $model->{$model->nameAttribute} = Yii::$app->request->post('name');
         $model->save(false);
     }
 

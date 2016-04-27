@@ -75,7 +75,8 @@ class NestedSets extends BaseWidget
             $items['update'] = ['label' => Yii::t('tree', 'Update')];
         }
 
-        $this->jsTreeOptions = ArrayHelper::merge([
+        //We don't always need contextmenu and another settings. We need to replace them, not only expand
+        $this->jsTreeOptions = array_replace_recursive([
             'clientOptions' => [
                 'core' => [
                     'data' => [

@@ -16,7 +16,6 @@ use yii\web\Response;
 
 class TreeController extends Controller
 {
-
     /**
      * @inheritdoc
      */

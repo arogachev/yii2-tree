@@ -1,5 +1,8 @@
 {
-    "name": "arogachev/yii2-tree",
+    "name": "BadSantos/yii2-tree",
+    "replace": {
+        "arogachev/yii2-tree":"*"
+    },
     "description": "Database tree structures management for Yii 2 framework",
     "keywords": [
         "yii2",
@@ -9,13 +12,13 @@
         "widget",
         "active record"
     ],
-    "homepage": "https://github.com/arogachev/yii2-tree",
+    "homepage": "https://github.com/BadSantos/yii2-tree",
     "type": "yii2-extension",
     "license": "BSD-3-Clause",
     "authors": [
         {
-            "name": "Alexey Rogachev",
-            "email": "arogachev90@gmail.com"
+            "name": "Roman Peregudov",
+            "email": "peregud_roma@mail.ru"
         }
     ],
     "require": {
@@ -25,7 +28,7 @@
     },
     "autoload": {
         "psr-4": {
-            "arogachev\\tree\\": "src"
+            "BadSantos\\tree\\": "src"
         }
     }
 }

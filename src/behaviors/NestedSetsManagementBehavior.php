@@ -32,9 +32,15 @@ class NestedSetsManagementBehavior extends Behavior
         $modelClass = $this->owner->className();
         /* @var $baseModel \creocoder\nestedsets\NestedSetsBehavior */
         $baseModel = new $this->owner;
-        $models = $modelClass::find()
-            ->orderBy($baseModel->leftAttribute)
-            ->all();
+        $models = $modelClass::find();
+        
+        if ($baseModel->treeAttribute) {
+            $models->orderBy($baseModel->treeAttribute, $baseModel->leftAttribute);
+        } else {
+            $models->orderBy($baseModel->leftAttribute);
+        }
+        
+        $models = $models->all();
 
         $depth = 0;
         $c = 0;
